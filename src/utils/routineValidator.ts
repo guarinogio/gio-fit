@@ -12,7 +12,7 @@ export const validateRoutineSession = (session: string): boolean => {
   const setRegex = /^\[\d+x(\d+[ms]|\d+)\](?:\s@\d+%\s\(\d+(kg|lb)\))?(?:\s\(\d+(kg|lb)\))?(?:\s\|\s\d+[ms])?$/;
 
   // Regular expression to disallow [NxM] without time or weight
-  const invalidBareSetRegex = /^\[\d+x\d+\]$/;
+  const invalidBareSetRegex = /^\[\d+x\d+\](?:\s\|\s\d+[ms])?$/;
 
   // Split input into lines and trim spaces
   const lines = session.split('\n').map((line) => line.trim());
@@ -34,7 +34,7 @@ export const validateRoutineSession = (session: string): boolean => {
     } else if (setRegex.test(line)) {
       // Check if the set is invalid due to missing time or weight
       if (invalidBareSetRegex.test(line)) {
-        console.error('Set is missing time or weight:', line);
+        console.error('Set is missing required weight or time:', line);
         return false;
       }
       // A valid set, mark that the exercise has a set
